@@ -1,0 +1,13 @@
+{
+    "watch": [
+        "app",
+        "app.js",
+        "config"
+    ],
+    "ext": "js,json",
+    "ignore": [
+        "auth_info_baileys_*",
+        "**/auth_info_baileys_*/**",
+        "**/creds.json"
+    ]
+}
