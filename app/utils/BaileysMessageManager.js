@@ -3,6 +3,7 @@ const {findOrCreateContact} = require('../services/ContactService');
 const {getActiveBotByConnectionId, buildMessageFromJson} = require('../services/BotService');
 const {getOrCreateContextByNumber} = require('../services/BotConversationService');
 const {buildMessage} = require('../services/BotNodeOptionService');
+const {ensureConnection} = require('./ConnectionManager');
 
 /**
  * Procesa un mensaje entrante. Las dependencias (sendMessage, etc.) se inyectan
@@ -12,10 +13,10 @@ const {buildMessage} = require('../services/BotNodeOptionService');
  * @param {object} deps - { sendMessage(connectionId, remoteJid, content) }
  */
 async function handleIncomingMessage(connectionId, message, deps = {}) {
-	const {sendMessage} = deps;
+	const {sendMessage, sock} = deps;
 	console.log(`[BOT:${connectionId}] Mensaje recibido:`, message);
 
-	const {remoteJidAlt, text = ''} = message;
+	const {remoteJidAlt, remoteJid, text = ''} = message;
 	if (!remoteJidAlt || !sendMessage) return;
 
 	try {
@@ -60,8 +61,19 @@ async function handleIncomingMessage(connectionId, message, deps = {}) {
 			typeof message_to_send === 'string' ? {text: message_to_send} : message_to_send;
 
 		console.log('RESPUESTA payload ' + JSON.stringify(payload));
+		// const sock = await ensureConnection(connectionId);
+		// console.log(sock);
 
-		await sendMessage(connectionId, remoteJidAlt, payload);
+		// Retardo aleatorio 1-3 segundos para parecer más humano y reducir detección por Meta
+		await randomDelay(1000, 2000);
+		await sock.sendPresenceUpdate('composing', remoteJid); //Envía el estado “composing” → el contacto ve “escribiendo…” (o “typing…”)
+		// Duración aleatoria de "escribiendo..." (1-4 seg) para variar el patrón
+		await randomDelay(1000, 3000);
+		await sock.sendPresenceUpdate('paused', remoteJid); //Envía el estado “paused” → el contacto ve “escribiendo…” (o “typing…”)
+
+		await sock.sendMessage(remoteJid, payload);
+
+		// await sendMessage(connectionId, remoteJid, payload);
 	} catch (err) {
 		console.error(`[BOT:${connectionId}] Error al enviar respuesta:`, err);
 		return;

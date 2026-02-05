@@ -1,9 +1,7 @@
-const { isContactBlacklisted } = require('../services/BlackListContactService');
+const {isContactBlacklisted} = require('../services/BlackListContactService');
 const {handleIncomingMessage} = require('./BaileysMessageManager');
 const {sendMessage} = require('./ConnectionManager');
 const Helpers = require('./Helpers');
-
-
 
 let connectionContexts = {};
 let baileysPromise;
@@ -119,7 +117,6 @@ async function connectToWhatsappForConnection({
 				m.message?.videoMessage?.caption ||
 				'';
 
-			
 			const messageData = {
 				connectionId: connectionId,
 				remoteJid,
@@ -133,7 +130,7 @@ async function connectToWhatsappForConnection({
 			};
 
 			try {
-				handleIncomingMessage(connectionId, messageData, {sendMessage});
+				handleIncomingMessage(connectionId, messageData, {sendMessage, sock});
 			} catch (err) {
 				console.error(`[BOT:${connectionId}] Error en handleIncomingMessage:`, err);
 			}
