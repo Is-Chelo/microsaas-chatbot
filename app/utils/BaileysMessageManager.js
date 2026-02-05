@@ -54,11 +54,13 @@ async function handleIncomingMessage(connectionId, message, deps = {}) {
 			text,
 			number
 		);
-		console.log('RESPUESTA ' + JSON.stringify(message_to_send));
 		if (message_to_send == null) return;
 
 		const payload =
 			typeof message_to_send === 'string' ? {text: message_to_send} : message_to_send;
+
+		console.log('RESPUESTA payload ' + JSON.stringify(payload));
+
 		await sendMessage(connectionId, remoteJidAlt, payload);
 	} catch (err) {
 		console.error(`[BOT:${connectionId}] Error al enviar respuesta:`, err);

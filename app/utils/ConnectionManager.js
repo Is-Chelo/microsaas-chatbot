@@ -133,6 +133,8 @@ const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 const randomDelay = (minMs, maxMs) => delay(minMs + Math.random() * (maxMs - minMs));
 
 async function sendMessage(connectionId, remoteJid, content) {
+	console.log('SEND MENSAJE');
+	console.log({connectionId, remoteJid, content});
 	const sock = await ensureConnection(connectionId);
 
 	// Retardo aleatorio 1-3 segundos para parecer más humano y reducir detección por Meta
