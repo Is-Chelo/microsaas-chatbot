@@ -9,8 +9,8 @@ require('dotenv').config();
 
 module.exports = {
 	username: process.env.MYSQLUSER || 'root',
-	password: process.env.MYSQLPASSWORD || null,
-	database: process.env.MYSQLDATABASE || 'lab',
-	host: process.env.MYSQLHOST || '127.0.0.1',
+	password: process.env.MYSQLPASSWORD || 'fMFCKdrpQHsSVHcUfQEjyBFztHfoSlZN',
+	database: process.env.MYSQLDATABASE || 'railway',
+	host: process.env.MYSQLHOST || 'mysql.railway.internal',
 	dialect: process.env.DIALECT || 'mysql',
 };
