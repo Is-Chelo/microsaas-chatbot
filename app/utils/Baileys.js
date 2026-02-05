@@ -92,22 +92,22 @@ async function connectToWhatsappForConnection({
 			const messageId = m.key.id;
 
 			// TODO: Verificamos si esta en la blacklist De momento por conection
-			// const phone_from_jid = Helpers.extractPhoneFromJid(remoteJid);
-			// const blacklisted = await isContactBlacklisted(connectionId, phone_from_jid);
-			// if (blacklisted) return true;
+			const phone_from_jid = Helpers.extractPhoneFromJid(remoteJid);
+			const blacklisted = await isContactBlacklisted(connectionId, phone_from_jid);
+			if (blacklisted) return true;
 
-			// // TODO: Validar si el mensaje es de un grupo o de un contacto normal
-			// if (
-			// 	remoteJidAlt == '' ||
-			// 	event.type != 'notify' || //Cualquier evento que no sea notify (solo se aceptan notificaciones normales de mensajes)
-			// 	m.key.fromMe || //Si el mensaje es propio, no se procesa
-			// 	remoteJidAlt.includes('@g.us') || //Si el mensaje es de un grupo, no se procesa
-			// 	remoteJid.includes('@g.us') || //Si el mensaje es de un grupo, no se procesa
-			// 	remoteJidAlt.includes('@broadcast') || //Si el mensaje es de un broadcast, no se procesa
-			// 	remoteJid.includes('@broadcast') //Si el mensaje es de un broadcast, no se procesa
-			// ) {
-			// 	return true;
-			// }
+			// TODO: Validar si el mensaje es de un grupo o de un contacto normal
+			if (
+				remoteJidAlt == '' ||
+				event.type != 'notify' || //Cualquier evento que no sea notify (solo se aceptan notificaciones normales de mensajes)
+				m.key.fromMe || //Si el mensaje es propio, no se procesa
+				remoteJidAlt.includes('@g.us') || //Si el mensaje es de un grupo, no se procesa
+				remoteJid.includes('@g.us') || //Si el mensaje es de un grupo, no se procesa
+				remoteJidAlt.includes('@broadcast') || //Si el mensaje es de un broadcast, no se procesa
+				remoteJid.includes('@broadcast') //Si el mensaje es de un broadcast, no se procesa
+			) {
+				return true;
+			}
 
 			// Obtener texto del mensaje (varios formatos de Baileys)
 			const text =
