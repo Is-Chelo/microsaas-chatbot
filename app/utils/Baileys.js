@@ -3,8 +3,7 @@ const {handleIncomingMessage} = require('./BaileysMessageManager');
 const {sendMessage} = require('./ConnectionManager');
 const Helpers = require('./Helpers');
 
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-const randomDelay = (minMs, maxMs) => delay(minMs + Math.random() * (maxMs - minMs));
+
 
 let connectionContexts = {};
 let baileysPromise;
@@ -134,13 +133,6 @@ async function connectToWhatsappForConnection({
 			};
 
 			try {
-				// Retardo aleatorio 1-3 segundos para parecer más humano y reducir detección por Meta
-				await randomDelay(1000, 3000);
-				await sock.sendPresenceUpdate('composing', remoteJidAlt); //Envía el estado “composing” → el contacto ve “escribiendo…” (o “typing…”)
-				// Duración aleatoria de "escribiendo..." (1-4 seg) para variar el patrón
-				await randomDelay(1000, 4000);
-				await sock.sendPresenceUpdate('paused', remoteJidAlt); //Envía el estado “paused” → el contacto ve “escribiendo…” (o “typing…”)
-
 				handleIncomingMessage(connectionId, messageData, {sendMessage});
 			} catch (err) {
 				console.error(`[BOT:${connectionId}] Error en handleIncomingMessage:`, err);

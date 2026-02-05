@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 			welcome_message: DataTypes.TEXT,
 			created_at: DataTypes.DATE,
 			updated_at: DataTypes.DATE,
+			flow: DataTypes.JSON,
 		},
 		{
 			sequelize,

@@ -45,6 +45,9 @@ module.exports = {
 				// onDelete: 'CASCADE',
 				// onUpdate: 'CASCADE',
 			},
+			current_flow_key: {
+				type: Sequelize.STRING,
+			},
 
 			is_active: {
 				type: Sequelize.BOOLEAN,

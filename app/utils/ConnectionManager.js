@@ -129,8 +129,19 @@ function setOnIncomingMessage(handler) {
  *   { image: { url: '...' }, caption: '...' }
  *   { document: { url: '...' }, fileName: '...', caption: '...' }
  */
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+const randomDelay = (minMs, maxMs) => delay(minMs + Math.random() * (maxMs - minMs));
+
 async function sendMessage(connectionId, remoteJid, content) {
 	const sock = await ensureConnection(connectionId);
+
+	// Retardo aleatorio 1-3 segundos para parecer más humano y reducir detección por Meta
+	await randomDelay(1000, 3000);
+	await sock.sendPresenceUpdate('composing', remoteJid); //Envía el estado “composing” → el contacto ve “escribiendo…” (o “typing…”)
+	// Duración aleatoria de "escribiendo..." (1-4 seg) para variar el patrón
+	await randomDelay(1000, 4000);
+	await sock.sendPresenceUpdate('paused', remoteJid); //Envía el estado “paused” → el contacto ve “escribiendo…” (o “typing…”)
+
 	return sock.sendMessage(remoteJid, content);
 }
 

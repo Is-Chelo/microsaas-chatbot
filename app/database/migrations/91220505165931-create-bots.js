@@ -41,6 +41,10 @@ module.exports = {
 				type: Sequelize.TEXT,
 			},
 
+			flow: {
+				type: Sequelize.JSON,
+			},
+
 			created_at: {
 				allowNull: false,
 				type: Sequelize.DATE,
