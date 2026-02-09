@@ -12,6 +12,10 @@ const {ensureConnection} = require('./ConnectionManager');
  * @param {object} message - { remoteJid, fromMe, text, ... }
  * @param {object} deps - { sendMessage(connectionId, remoteJid, content) }
  */
+
+const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+const randomDelay = (minMs, maxMs) => delay(minMs + Math.random() * (maxMs - minMs));
+
 async function handleIncomingMessage(connectionId, message, deps = {}) {
 	const {sendMessage, sock} = deps;
 	console.log(`[BOT:${connectionId}] Mensaje recibido:`, message);
